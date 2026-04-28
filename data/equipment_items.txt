@@ -1,0 +1,34 @@
+Adventurer Equipment Guide
+
+Weapons
+
+Longsword
+A balanced melee weapon commonly used by warriors.
+
+Shortbow
+A ranged weapon favored by hunters and scouts.
+
+Battle Axe
+Heavy weapon capable of dealing powerful blows.
+
+Armor
+
+Leather Armor
+Light armor that provides mobility.
+
+Chain Mail
+Medium armor made from metal rings.
+
+Plate Armor
+Heavy armor offering the highest protection.
+
+Adventuring Gear
+
+Torch
+Provides light in dark environments.
+
+Rope
+Useful for climbing and exploration.
+
+Potion of Healing
+Restores health when consumed.
