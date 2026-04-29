@@ -58,7 +58,7 @@ CLI Response
 
 | Component | Technology |
 |--------|--------|
-| Programming Language | Python 3.11 |
+| Programming Language | Python 3.10 |
 | Embedding Model | SentenceTransformers (`all-MiniLM-L6-v2`) |
 | Vector Database | ChromaDB |
 | Local LLM | Ollama (`llama3`) |
@@ -231,69 +231,79 @@ ollama pull llama3
 
 ---
 
-### 2. Install Python dependencies
+### 2. Install Docker
+
+Download Docker Desktop from:
 
 
-pip install -r requirements.txt
+https://www.docker.com/products/docker-desktop
 
 
 ---
 
-### 3. Add your documents
+### 3. Pull the Docker image
 
-Place your PDF, DOCX, or TXT files in the `data/` folder.
+
+docker pull twahlma/cs325-rag
+
 
 ---
 
 ## Running the Project
 
-### Option A — Run directly with Python
-
-From the `app/` directory:
+### Run the container (Windows / Mac)
 
 
-python main.py
+docker run -it --rm twahlma/cs325-rag
 
 
----
-
-### Option B — Run with Docker
-
-#### Build the Docker image
+### Run the container (Linux — Ollama on host)
 
 
-docker build -t cs325-rag .
+docker run -it --rm --add-host=host.docker.internal:host-gateway twahlma/cs325-rag
 
 
-#### Run the container (Windows / Mac)
+### Run with a custom Ollama host
 
 
-docker run -it --rm cs325-rag
-
-
-#### Run the container (Linux — Ollama on host)
-
-
-docker run -it --rm --add-host=host.docker.internal:host-gateway cs325-rag
-
-
-#### Run with a custom Ollama host
-
-
-docker run -it --rm -e OLLAMA_HOST=http://192.168.1.100:11434 cs325-rag
+docker run -it --rm -e OLLAMA_HOST=http://192.168.1.100:11434 twahlma/cs325-rag
 
 
 ---
 
 ## Running the Test Suite
 
-From the root of the project:
+### Run tests inside the container
 
 
-pytest tests/test_rag.py -v
+docker run --rm twahlma/cs325-rag pytest tests/test_rag.py -v
 
 
 The test suite uses mocked implementations of all external dependencies (ChromaDB, Ollama). No running services are required to execute the tests.
+
+### Run tests with HTML report
+
+
+docker run --rm twahlma/cs325-rag bash -c "pip install pytest-html && pytest tests/test_rag.py -v --html=report.html --self-contained-html"
+
+
+To save the report to your local machine:
+
+
+docker run --rm -v "%cd%:/home/output" twahlma/cs325-rag bash -c "pip install pytest-html && pytest tests/test_rag.py -v --html=output/report.html --self-contained-html"
+
+
+---
+
+## CI Pipeline
+
+The project uses GitHub Actions to automatically run the test suite on every push or pull request to `main`.
+
+The workflow pulls the Docker image from Docker Hub and runs the tests inside the container. The workflow file is located at:
+
+
+.github/workflows/dockerCI.yml
+
 
 ---
 
@@ -336,6 +346,6 @@ This ensures grounded responses.
 
 ## Author
 
-CS325 - Project 2  
-Tyler Wahlman  
+CS325 - Project 2
+Tyler Wahlman
 Retrieval-Augmented Generation Assistant
